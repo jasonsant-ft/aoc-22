@@ -1,0 +1,72 @@
+<script>
+    const input = `A Y
+B X
+C Z`.split('\n');
+
+    const hands = {
+        rock: {
+            inferiorHand: "scissors",
+            superiorHand: "paper",
+            points: 1,
+        },
+        paper: {
+            inferiorHand: "rock",
+            superiorHand: "scissors",
+            points: 2,
+        },
+        scissors: {
+            inferiorHand: "paper",
+            superiorHand: "rock",
+            points: 3,
+        }
+    };
+
+    const handsIndex = {
+        A: "rock",
+        B: "paper",
+        C: "scissors",
+        X: "rock",
+        Y: "paper",
+        Z: "scissors"
+    };
+
+    let score = 0;
+    input.forEach((e) => {
+        score += getMyScore(handsIndex[e.split(" ")[0]], handsIndex[e.split(" ")[1]]);
+    });
+
+    // part1
+    console.log("Part 1: ", score);
+
+    // Part 2
+    score = 0;
+    input.forEach(e => {
+        const cols = e.split(" ");
+        let player1 = handsIndex[cols[0]];
+        let player2 = "";
+
+        switch (cols[1]) {
+            case "X":
+                // need to lose
+                player2 = hands[player1].inferiorHand;
+                break;
+            case "Z":
+                // need to win
+                player2 = hands[player1].superiorHand;
+                break;
+            case "Y":
+                // need to draw
+                player2 = player1;
+                break;
+        }
+
+        score += getMyScore(player1, player2);
+    });
+
+    console.log("Part 2: ", score);
+
+    function getMyScore (player1Hand, player2Hand) {
+        if (player1Hand === player2Hand) return hands[player2Hand].points + 3; // Draw
+        return hands[player2Hand].points + (player1Hand === hands[player2Hand].inferiorHand ? 6 : 0) // Win or lose
+    }
+</script>

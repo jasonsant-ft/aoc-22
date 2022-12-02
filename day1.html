@@ -1,0 +1,54 @@
+<script>
+    const input = `2000
+12013
+5489
+11485
+2430
+7722
+5456
+
+6693
+3867
+1645
+3924
+1545
+1910
+5443
+6276
+4574
+4147
+3942
+6322
+2904`.split('\n');
+
+    const elves = [];
+    let tempMeals = [];
+
+    input.forEach((meal, index) => {
+        if (meal === "") {
+            elves.push(tempMeals);
+            tempMeals = [];
+        } else if (index === input.length - 1) {
+            tempMeals.push(parseInt(meal));
+            elves.push(tempMeals);
+            tempMeals = [];
+        } else {
+            tempMeals.push(parseInt(meal));
+        }
+    });
+
+    const calories = [];
+
+    elves.forEach(elf => {
+        calories.push(getArraySum(elf));
+    });
+    console.log(`Part 1: `, Math.max(...calories));
+
+    const maxToMin = calories.sort((a, b) => b - a);
+    console.log(`Part 2 `, getArraySum(maxToMin.slice(0, 3)));
+
+    function getArraySum(arr) {
+        return arr.reduce((a, c) => a + c)
+    }
+
+</script>
