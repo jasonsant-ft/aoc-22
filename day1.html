@@ -2,32 +2,23 @@
 <script>
     // const input = sampleInput.split('\n');
     const input = fullInput.split('\n');
-
     const elves = [];
     let tempMeals = [];
-
-    input.forEach((meal, index) => {
-        if (meal === "") {
-            elves.push(tempMeals);
-            tempMeals = [];
-        } else if (index === input.length - 1) {
-            tempMeals.push(parseInt(meal));
-            elves.push(tempMeals);
-            tempMeals = [];
-        } else {
-            tempMeals.push(parseInt(meal));
-        }
-    });
-
     const calories = [];
 
-    elves.forEach(elf => {
-        calories.push(getArraySum(elf));
-    });
-    console.log(`Part 1: `, Math.max(...calories));
+    for (let i = 0; i < input.length; i++) {
+        const meal = parseInt(input[i] === "" ? 0 : input[i]);
+        tempMeals.push(parseInt(meal));
 
-    const maxToMin = calories.sort((a, b) => b - a);
-    console.log(`Part 2: `, getArraySum(maxToMin.slice(0, 3)));
+        if (meal === 0 || i === input.length - 1) {
+            elves.push(tempMeals);
+            calories.push(getArraySum(tempMeals));
+            tempMeals = [];
+        }
+    }
+
+    console.log(`Part 1: `, Math.max(...calories));
+    console.log(`Part 2: `, getArraySum(calories.sort((a, b) => b - a).slice(0, 3)));
 
     function getArraySum(arr) {
         return arr.reduce((a, c) => a + c)
