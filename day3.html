@@ -1,0 +1,58 @@
+<script src="day3_inputs.js"></script>
+<script>
+    // const input = sampleInput.split('\n');
+    const input = fullInput.split('\n');
+
+    // Generate an alphabet array
+    const alpha = Array.from(Array(26)).map((e, i) => i + 65);
+    const alphabet = [
+        ...alpha.map((x) => String.fromCharCode(x).toLocaleLowerCase()),
+        ...alpha.map((x) => String.fromCharCode(x))
+    ];
+
+    function findCommonCharacter(strings) {
+        const firstString = strings[0];
+        const otherStrings = strings.slice(1, strings.length);
+
+        for (let i in firstString) {
+            if (otherStrings.every(s => s.includes(firstString[i]))) return firstString[i];
+        }
+    }
+
+    function splitIntoCompartments(rucksack) {
+        return [
+            rucksack.slice(0, rucksack.length / 2),
+            rucksack.slice(rucksack.length / 2, rucksack.length),
+        ];
+    }
+
+    function getLetterPriority(letter) {
+        return alphabet.indexOf(letter) + 1;
+    }
+
+    function part1() {
+        let sum = 0;
+        input.forEach(rucksack => {
+            const compartments = splitIntoCompartments(rucksack);
+            sum += getLetterPriority(findCommonCharacter(compartments));
+        });
+        return sum;
+    }
+
+    function part2() {
+        const numberOfGroups = input.length / 3;
+        let sum = 0;
+
+        for (let i = 0; i < numberOfGroups; i++) {
+            const index = i * 3;
+            const group = input.slice(index, index + 3);
+            sum += getLetterPriority(findCommonCharacter(group));
+        }
+        return sum;
+    }
+
+    console.log(part1());
+    console.log(part2());
+
+
+</script>
