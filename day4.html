@@ -1,0 +1,17 @@
+<script src="day4_inputs.js"></script>
+<script>
+    // const input = sampleInput.split('\n');
+    const input = fullInput.split('\n');
+
+    function getRangeArrayFromString(range) {
+        range = range.split('-').map(e => parseInt(e));
+        return Array.from({ length: (range[1] - range[0]) + 1 }, (_, i) => range[0] + i);
+    }
+
+    function arraysIntersect(a, b, fully) {
+        return fully ? b.every(v => a.includes(v)) || a.every(v => b.includes(v)) : b.some(v => a.includes(v)) || a.some(v => b.includes(v));
+    }
+
+    console.log("Part 1: ", input.filter(e => arraysIntersect(getRangeArrayFromString(e.split(",")[0]), getRangeArrayFromString(e.split(",")[1]), true)).length);
+    console.log("Part 2: ", input.filter(e => arraysIntersect(getRangeArrayFromString(e.split(",")[0]), getRangeArrayFromString(e.split(",")[1]), false)).length);
+</script>
