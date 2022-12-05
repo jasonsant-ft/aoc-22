@@ -1,0 +1,52 @@
+<script src="day5_inputs.js"></script>
+<script>
+    // const input = sampleInput.split('\n');
+    const input = fullInput.split('\n');
+
+    const separatorPos = input.indexOf(input.find(e => e.length === 0));
+    const cargo = [...input.slice(0, separatorPos - 1)].reverse();
+    const instructions = input.slice(separatorPos + 1, input.length);
+    const numberOfCompartments = (input[0].length + 1) / 4;
+    let stacks;
+
+    // Part 1
+    resetStacks();
+    instructions.forEach(i => {
+        let { destination, source, movingCratesCount } = parseInstruction(i);
+        for (let i = 0; i < movingCratesCount; i++) {
+            stacks[destination].push(stacks[source].pop());
+        }
+    });
+    console.log("Part 1: ", stacks.map(e => e.pop()).join(""));
+
+    // Part 2
+    resetStacks();
+    instructions.forEach(instruction => {
+        let { source, destination, movingCratesCount } = parseInstruction(instruction);
+        const cratesMoving = [...stacks[source].slice(stacks[source].length - movingCratesCount, stacks[source].length)];
+        stacks[destination] = [...stacks[destination], ...cratesMoving];
+        stacks[source] = [...stacks[source].slice(0, movingCratesCount * -1)]
+    });
+    console.log("Part 2: ", stacks.map(e => e.pop()).join(""));
+
+    function resetStacks() {
+        stacks = Array.from(Array(numberOfCompartments), () => new Array(0));
+
+        // Create the stacks from the input
+        [...cargo].forEach((line) => {
+            line.match(/.{1,4}/g).forEach((crate, index) => {
+                if (crate.trim() !== "") {
+                    stacks[index].push(crate.replace("[", "").replace("]", "").trim());
+                }
+            })
+        });
+    }
+
+    function parseInstruction(instruction) {
+        return {
+            source: instruction.split(" ")[3] - 1,
+            destination: instruction.split(" ")[5] - 1,
+            movingCratesCount: instruction.split(" ")[1],
+        };
+    }
+</script>
