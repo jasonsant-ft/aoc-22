@@ -1,0 +1,20 @@
+<script src="day6_inputs.js"></script>
+<script>
+    // const input = sampleInput;
+    const input = fullInput;
+
+    console.log("Part 1: ", getUniqueCharset(4));
+    console.log("Part 2: ", getUniqueCharset(14));
+
+    function getUniqueCharset(count) {
+        for (let i = 0; i < input.length; i++) {
+            if (stingHasUniqueCharacters(input.substring(i, i + count))) {
+                return i + count;
+            }
+        }
+    }
+
+    function stingHasUniqueCharacters(str) {
+        return new Set(str).size == str.length;
+    }
+</script>
